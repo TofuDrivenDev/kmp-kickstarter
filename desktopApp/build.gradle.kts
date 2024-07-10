@@ -1,17 +1,17 @@
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 
 plugins {
-    kotlin("multiplatform")
-    id("org.jetbrains.compose")
+    alias(libs.plugins.kotlinMultiplatform)
+    alias(libs.plugins.compose.multiplatform)
     alias(libs.plugins.compose.compiler)
 }
 
 kotlin {
-    jvm {
-        withJava()
-    }
+    jvm("desktop")
+  
     sourceSets {
-        jvmMain.dependencies {
+        val desktopMain by getting
+        desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
             implementation(libs.skiko)
             implementation(compose.ui)
@@ -58,7 +58,8 @@ kotlin {
             // Logging
             implementation(libs.kermit)
         }
-        val jvmTest by getting
+        
+        val desktopTest by getting
     }
 }
 
@@ -67,7 +68,7 @@ compose.desktop {
         mainClass = "MainKt"
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
-            packageName = "desktopApp"
+            packageName = "org.example.project"
             packageVersion = "1.0.0"
         }
     }
